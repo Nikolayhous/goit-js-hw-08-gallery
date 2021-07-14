@@ -67,31 +67,23 @@ const galleryItems = [
 const refs = {
   galleryUl: document.querySelector('.js-gallery'),
   lightbox: document.querySelector('.lightbox'),
-  onButton: document.querySelector('[data-action="close-lightbox]'),
+  lightboxImage: document.querySelector('.lightbox__image'),
+  lightboxOverlay: document.querySelector('.lightbox__overlay'),
+  closeModalBtn: document.querySelector('[data-action="close-lightbox"]'),
 };
-// // создал  галерею картинок и поместил в список через метод reduce
-// const createGallery = ({original, preview, description}) =>
-// `<li class = gallery__item >
-// <a href="${original}" class = gallery__link>
-// <img class = gallery__image src="${preview}" alt= "${description}" data-source='${original}'>
-// </a>
-// </li>`;
 
-// const showGallery = galleryItems.reduce((acc, galleryItem) =>
-// acc + createGallery(galleryItem),   '',);
-// refs.galleryUl.insertAdjacentHTML('beforeend', showGallery);
+refs.galleryUl.addEventListener('click', onOpenClickGallery);
+refs.closeModalBtn.addEventListener('click', CloseModalBtn);
+refs.lightboxOverlay.addEventListener('click', onBackdropClick);
 
-
-//создал галерею через метод map
-
+//создал разметку галереи через метод map
 const itemCardsGallery = createGallery();
-refs.galleryUl.insertAdjacentHTML('beforeend', itemCardsGallery);
-
 function createGallery() {
-  return galleryItems.map(({ original, preview, description }) => {
-    return `
-    <li class = gallery__item > 
-      <a href="${original}" class = gallery__link>
+  return galleryItems
+    .map(({ original, preview, description }) => {
+      return `
+    <li class = gallery__item class = gallery__link> 
+      <a href="${original}">
         <img 
           class = gallery__image 
           src="${preview}" 
@@ -100,32 +92,85 @@ function createGallery() {
       </a>
     </li>
 `;
-  })
-  .join('');
+    })
+    .join('');
 }
+refs.galleryUl.insertAdjacentHTML('beforeend', itemCardsGallery);
 console.log(refs.galleryUl);
 
-
-// добавил слушателя событий на галерею
-refs.galleryUl.addEventListener('click', onTagsClickGallery);
-
-function onTagsClickGallery (event) {
+//функция на событие для просмотра изображения в модальгном окне
+function onOpenClickGallery(event) {
+  window.addEventListener('keydown', onEscKeydown);
+  event.preventDefault();
+  if (event.target.nodeName === 'IMG') {
+    refs.lightbox.classList.add('is-open');
+    refs.lightboxImage.src = event.target.getAttribute('data-source');
+    refs.lightboxImage.alt = event.target.alt;
+  }
+  console.log(event.target.nodeName);
   // const isImagesLightboxEl = event.target.classList.contains('lightbox__image');
   // if(!isImagesLightboxEl) {
   //   return;
   // }
-//  if (event.target.nodeName === 'IMG') {
-//  return;
-//  }
+  //  if (event.target.nodeName === 'IMG') {
+  //  return;
+  //  }
+}
 
-if (event.target.nodeName === event.target.classList.contains('lightbox__image')) {
-  refs.lightbox.classList.add('is-open');
-  refs.lightbox.document.querySelector('lightbox__image').src = event.target.src;
-  refs.lightbox.document.querySelector('lightbox__image').alt = event.target.alt;
-   }
+//функция для закрывания модалього окна при нажатии на кнопку
+function CloseModalBtn(event) {
+  window.removeEventListener('keydown', onEscKeydown);
+  refs.lightbox.classList.remove('is-open');
+  refs.lightboxImage.src = '';
+  refs.lightboxImage.alt = '';
+}
 
-// const lightboxImageEl = event.target;
-// const parentGallery = lightboxImageEl.closest('js-lightbox');
-// parentGallery.classList.add('is-open');
- console.log(event.target.nodeName);
+//функция для закрывания модалього окна при нажатии на бекдроп-оверлей
+function onBackdropClick(event) {
+  if (event.currentTarget === event.target) {
+    CloseModalBtn();
+  }
+}
+
+//функция для закрывания модалього окна при нажатии на esc
+function onEscKeydown(event) {
+  const ESC_KEY_CODE = "Escape";
+  if (event.code === ESC_KEY_CODE) {
+    CloseModalBtn();
+  }
+  console.log(event);
+}
+
+
+
+//скрипт для перелистывания картинок клавишами вправо и влево 
+window.addEventListener("keydown", (event) => {
+  if (event.code === "ArrowLeft") {
+    onArrowLeft();
+  }
+  if (event.code === "ArrowRight") {
+    onArrowRight();
+  }
+});
+
+function onArrowLeft() {
+  let index = +refs.lightboxImage.dataset.index;
+  if (index === 0) {
+    step(galleryItems.length - 1);
+    return;
+  }
+  step(index, -1);
+}
+function onArrowRight() {
+  let index = +refs.lightboxImage.dataset.index;
+  if (index === galleryItems.length - 1) {
+    step(0);
+    return;
+  }
+  step(index, 1);
+}
+
+function step(index, step = 0) {
+  refs.lightboxImage.dataset.index = `${index + step}`;
+  refs.lightboxImage.src = galleryItems[index + step].original;
 }
