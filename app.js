@@ -80,7 +80,7 @@ refs.lightboxOverlay.addEventListener('click', onBackdropClick);
 const itemCardsGallery = createGallery();
 function createGallery() {
   return galleryItems
-    .map(({ original, preview, description }) => {
+    .map(({ original, preview, description }, index) => {
       return `
     <li class = gallery__item class = gallery__link> 
       <a href="${original}" class = gallery__link>
@@ -88,7 +88,8 @@ function createGallery() {
           class = gallery__image 
           src="${preview}" 
           alt= "${description}" 
-          data-source='${original}'> 
+          data-source='${original}'
+          data-index='${index}'> 
       </a>
     </li>
 `;
@@ -106,6 +107,7 @@ function onOpenClickGallery(event) {
     refs.lightbox.classList.add('is-open');
     refs.lightboxImage.src = event.target.getAttribute('data-source');
     refs.lightboxImage.alt = event.target.alt;
+    refs.lightboxImage.dataset.index = event.target.dataset.index;
   }
   console.log(event.target.nodeName);
   // const isImagesLightboxEl = event.target.classList.contains('lightbox__image');
@@ -140,8 +142,6 @@ function onEscKeydown(event) {
   }
   console.log(event);
 }
-
-
 
 //скрипт для перелистывания картинок клавишами вправо и влево 
 window.addEventListener("keydown", (event) => {
