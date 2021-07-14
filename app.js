@@ -83,7 +83,7 @@ function createGallery() {
     .map(({ original, preview, description }) => {
       return `
     <li class = gallery__item class = gallery__link> 
-      <a href="${original}">
+      <a href="${original}" class = gallery__link>
         <img 
           class = gallery__image 
           src="${preview}" 
