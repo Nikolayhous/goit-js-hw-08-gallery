@@ -12,6 +12,7 @@ const refs = {
   refs.galleryUl.addEventListener('click', onOpenClickGallery);
   refs.closeModalBtn.addEventListener('click', CloseModalBtn);
   refs.lightboxOverlay.addEventListener('click', onBackdropClick);
+ 
   
   //создал разметку галереи через метод map
   // const itemCardsGallery =  createElement ();
@@ -46,16 +47,16 @@ const refs = {
       refs.lightboxImage.alt = event.target.alt;
       refs.lightboxImage.dataset.index = event.target.dataset.index;
     }
-    console.log(event.target.nodeName);
-    // const isImagesLightboxEl = event.target.classList.contains('lightbox__image');
-    // if(!isImagesLightboxEl) {
-    //   return;
-    // }
-    //  if (event.target.nodeName === 'IMG') {
-    //  return;
-    //  }
   }
-  
+
+      // Функция для открывание модального окна при нажатии на ентер
+    //      refs.lightboxImage.addEventListener('keydown',onOpenEnterKeydown) 
+    //   function onOpenEnterKeydown(event) {
+    //     if (event.code === "Enter") {
+    //       onOpenClickGallery();
+    //   }
+    // }
+
   //функция для закрывания модалього окна при нажатии на кнопку
   function CloseModalBtn(event) {
     window.removeEventListener('keydown', onEscKeydown);
@@ -63,7 +64,7 @@ const refs = {
     refs.lightboxImage.src = '';
     refs.lightboxImage.alt = '';
   }
-  
+
   //функция для закрывания модалього окна при нажатии на бекдроп-оверлей
   function onBackdropClick(event) {
     if (event.currentTarget === event.target) {
