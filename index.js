@@ -50,12 +50,16 @@ const refs = {
   }
 
       // Функция для открывание модального окна при нажатии на ентер
-    //      refs.lightboxImage.addEventListener('keydown',onOpenEnterKeydown) 
-    //   function onOpenEnterKeydown(event) {
-    //     if (event.code === "Enter") {
-    //       onOpenClickGallery();
-    //   }
-    // }
+      window.addEventListener('keydown',onOpenEnterKeydown) 
+      function onOpenEnterKeydown(event) {
+        if (event.code === "Enter" && event.target.nodeName === "A") {
+          refs.lightbox.classList.add('is-open');
+          refs.lightbox.src = event.target.href;
+          refs.lightboxImage.src = event.target.getAttribute('data-source');
+          refs.lightboxImage.alt = event.target.alt;
+          refs.lightboxImage.dataset.index = event.target.dataset.index;
+      }
+    }
 
   //функция для закрывания модалього окна при нажатии на кнопку
   function CloseModalBtn(event) {
