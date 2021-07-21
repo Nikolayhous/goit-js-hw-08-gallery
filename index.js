@@ -54,10 +54,8 @@ const refs = {
       function onOpenEnterKeydown(event) {
         if (event.code === "Enter" && event.target.nodeName === "A") {
           refs.lightbox.classList.add('is-open');
-          refs.lightbox.src = event.target.href;
-          refs.lightboxImage.src = event.target.getAttribute('data-source');
+          refs.lightboxImage.src = event.target.href;
           refs.lightboxImage.alt = event.target.alt;
-          refs.lightboxImage.dataset.index = event.target.dataset.index;
       }
     }
 
