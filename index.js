@@ -59,7 +59,7 @@ const refs = {
       }
     }
 
-  //функция для закрывания модалього окна при нажатии на кнопку
+  //функция для закрывания модалього окна п---ри нажатии на кнопку
   function CloseModalBtn(event) {
     window.removeEventListener('keydown', onEscKeydown);
     refs.lightbox.classList.remove('is-open');
